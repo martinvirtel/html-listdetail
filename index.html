@@ -21,13 +21,72 @@
     <script>
      window.onhashchange = function () {
         var g=decodeURIComponent(location.hash.substring(1));
-        window.frames.viewframe.src=g;
+        if (g.length>0) {
+            window.frames.viewframe.src=g;
+        }
        };
 
 var list_template=_.template('<ul><% _.forEach(list,function(item) { %><li><a href="#<%= encodeURIComponent(item.url) %>"><%= item.label %></a></li><% }) %></ul>');
        $.getJSON("list.json",function(data) {
             $("#list").html(list_template(data));
+            var g=location.hash;
+            $('a[href="'+g+'"]').parent().addClass("current")[0].scrollIntoView();
+            $("#list ul li a").on("click",function(event) {
+                var $t=$(this);
+                var $p=$t.parent();
+                $p.siblings().removeClass("current");
+                $p.addClass("current");
+                document.location.hash=$t.attr("href");
+                event.preventDefault();
+            }); 
        });
+
+       $(document).ready(function() {
+           $(document).trigger("hashchange");
+        });
+
+       function go_next() {
+            $("#list").scrollToSimple($('li.current').next().find("a").trigger("click"));
+       }
+       
+       function go_prev() {
+            $("#list").scrollToSimple($('li.current').prev().find("a").trigger("click"));
+       }
+
+    $(document.documentElement).keyup(function (e) {
+      if (_.indexOf([39,13,32,40],e.keyCode) > -1)
+      {
+        go_next();
+        e.preventDefault();
+      }
+
+        
+      if (_.indexOf([37,38,8],e.keyCode) > -1)
+      {
+        go_prev();
+        e.preventDefault();
+      }
+      console.log("KeyCode: "+e.keyCode);
+
+
+    });
+    $.fn.scrollToSimple = function ($target) {
+        var $container = this.first();      // Only scrolls the first matched container
+
+        var pos = $target.position(), height = $target.outerHeight();
+        var containerScrollTop = $container.scrollTop(), containerHeight = $container.height();
+        var top = pos.top + containerScrollTop;     // position.top is relative to the scrollTop of the containing element
+
+        var paddingPx = containerHeight * 0.15;      // padding keeps the target from being butted up against the top / bottom of the container after scroll
+
+        if (top < containerScrollTop) {     // scroll up                
+            $container.scrollTop(top - paddingPx);
+        }
+        else if (top + height > containerScrollTop + containerHeight) {     // scroll down
+            $container.scrollTop(top + height - containerHeight + paddingPx);
+        }
+    };
+
     </script>
     </body>
 </html>

@@ -17,6 +17,20 @@ body {
     float: left;
 }
 
+#list li {
+    margin-left: 1em;
+    margin-bottom: 0.5em;
+    padding: 0.1em;
+}
+
+#list li.current {
+    background-color: #e0a0a0;
+}
+
+#list ul {
+    list-style-type: none;
+}
+
 #view {
     width: 79%;
     height: 100%;
