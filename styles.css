@@ -1,0 +1,33 @@
+
+* { border: 0px; 
+    padding: 0px;
+    margin: 0px;
+    font-family: Arial, Sans, Helvetica;
+  }
+
+body {
+        height: 100%;
+        width: 100%;
+    }
+
+#list {
+    width: 20%;
+    height: 100%;
+    overflow: auto;
+    float: left;
+}
+
+#view {
+    width: 79%;
+    height: 100%;
+    background-color: #808080;
+    right: 0px; 
+    position: absolute; 
+}
+
+#view iframe {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+

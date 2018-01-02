@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <!-- 
+            left div: list built from "list" attribute of list.json 
+            right div: iframe with URL = #hash document.location
+        -->
+    </head>
+    <body>
+        <div id="list">
+            List
+        </div>
+        <div id="view">
+            <iframe id="viewframe" src="howto.html"></iframe>
+        </div>
+        <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script>
+     window.onhashchange = function () {
+        var g=decodeURIComponent(location.hash.substring(1));
+        window.frames.viewframe.src=g;
+       };
+
+var list_template=_.template('<ul><% _.forEach(list,function(item) { %><li><a href="#<%= encodeURIComponent(item.url) %>"><%= item.label %></a></li><% }) %></ul>');
+       $.getJSON("list.json",function(data) {
+            $("#list").html(list_template(data));
+       });
+    </script>
+    </body>
+</html>
